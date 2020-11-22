@@ -1,0 +1,94 @@
+<div fxLayout="row" fxLayoutAlign="space-between" fxFill>
+  <div
+    fxFlex="70"
+    fxLayout="column"
+    fxLayoutAlign="space-between stretch"
+    class="aside-chat"
+  >
+    <!-- tên người chat, nhóm chatchat -->
+    <div
+      class="title-chat"
+      fxFlex="13"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+    >
+      <mat-card>
+        <mat-card-header>
+          <img [src]="avatarUrl" alt="avt" mat-card-avatar />
+          <mat-card-title>{{ userName }}</mat-card-title>
+          <mat-card-subtitle>{{ lastTimeConnect }}</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+      <button mat-icon-button fxFlexAlign="end">
+        <mat-icon
+          style="color: black; font-size: 30px !important; padding-right: 10px"
+          >group_add</mat-icon
+        >
+      </button>
+    </div>
+    <!-- nội dung đoạn chatchat -->
+    <div class="content-chat" fxFlex="75"></div>
+    <!-- nhập nội dung chatchat -->
+    <div class="input-chat" fxFlex="12">
+      <div>
+        <button mat-icon-button fxFlexAlign="end">
+          <mat-icon style="color: #72808e">mood</mat-icon>
+        </button>
+        <button mat-icon-button fxFlexAlign="end">
+          <mat-icon style="color: #72808e">attach_file</mat-icon>
+        </button>
+        <button mat-icon-button fxFlexAlign="end">
+          <mat-icon style="color: #72808e">photo</mat-icon>
+        </button>
+      </div>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between stretch"
+        style="background-color: white"
+      >
+        <input
+          placeholder="Nhập tin nhắn mới"
+          class="message"
+          type="text"
+          [formControl]="message"
+          style="line-height: 24px; width: 100%"
+        />
+        <button mat-icon-button fxFlexAlign="end">
+          <mat-icon style="color: #72808e">send</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- chứa dữa liệu hình ảnh trong đoạn chat -->
+  <div
+    fxFlex="30"
+    class="aside-file"
+    fxLayout="column"
+    fxLayoutAlign="space-between center"
+  >
+    <div class="chat-info" fxFlex="13" fxFill>
+      <h3 style="text-align: center; margin-top: 20px">THÔNG TIN HỘI THOẠI</h3>
+    </div>
+    <div
+      fxFlex="87"
+      fxFill
+      fxLayoutGap="20px"
+      fxLayout="column"
+      fxLayoutAlign="space-between center"
+      style="background-color: #EDEDED;"
+    >
+      <div fxFlex="50"  fxFill style="background-color:whitesmoke">
+        <button mat-icon-button fxFlexAlign="end">
+          <mat-icon style="color:#72808e">photo</mat-icon>
+          <span>Ảnh</span>
+        </button>
+      </div>
+      <div fxFlex="50"  fxFill  style="background-color:whitesmoke">
+        <button mat-icon-button fxFlexAlign="end">
+          <mat-icon style="color:#72808e">attach_file</mat-icon>
+          <span>File</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

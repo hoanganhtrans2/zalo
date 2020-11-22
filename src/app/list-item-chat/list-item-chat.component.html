@@ -1,0 +1,30 @@
+<div>
+  <select [(ngModel)]="selectedValue">
+    <option value="1">Tất cả tin nhắn</option>
+    <option value="2">Tin nhắn chưa đọc</option>
+    <option value="3">Tin nhắn từ người lạ</option>
+  </select>
+  <!-- <p>{{selectedValue}}</p> -->
+</div>
+
+<!--  -->
+<div>
+  <mat-selection-list [multiple]="false">
+    <mat-list-option
+      fxLayout="column"
+      *ngFor="let item of listUserChat"
+      [value]="item"
+    >
+      <mat-card class="item-chat">
+        <mat-card-header>
+          <img [src]="item.imgUrl" alt="avt" mat-card-avatar />
+          <div class="img-user"></div>
+          <mat-card-title>{{ item.name }}</mat-card-title>
+          <mat-card-subtitle>{{ item.lastMessage }}</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+
+      <mat-divider></mat-divider>
+    </mat-list-option>
+  </mat-selection-list>
+</div>

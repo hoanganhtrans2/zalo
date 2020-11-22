@@ -1,0 +1,37 @@
+.aside-chat {
+  background-color: tomato;
+  border-left: 1px solid #e8eaed;
+}
+.aside-file {
+  background-color: whitesmoke;
+  border-left: 1px solid #e8eaed;
+}
+.title-chat {
+  background-color: whitesmoke;
+}
+.content-chat {
+    background-image: linear-gradient(to right top, #96aac8, #82a6b4, #7f9e9d, #84948b, #868981);
+}
+.input-chat {
+  background-color: whitesmoke;
+ 
+}
+mat-card{
+    background-color:transparent;
+    mat-card-title{
+        color: black;
+    }
+    mat-card-subtitle{
+        color: #72808E;
+    }
+}
+.mat-card:not([class*="mat-elevation-z"]) {
+    box-shadow: none !important;
+  }
+.message{
+    outline: none;
+    border: none;
+}
+.chat-info{
+    border-bottom: 1px solid #e8eaed;
+}
