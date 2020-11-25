@@ -38,6 +38,7 @@ export class DialogUpdateComponent implements OnInit {
     if (res) {
       alert('Cập nhật thông tin thành công');
       this.storageService.set('userName', this.data.dataUser.username);
+      this.storageService.listenUpddate();
       this.dialogRef.close();
     }
   }

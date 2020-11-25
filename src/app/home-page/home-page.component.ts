@@ -1,3 +1,4 @@
+import { CurrentDate } from './../shared/helper/CurrentDate.Helper';
 import { NotifyPanelComponent } from './../notify-panel/notify-panel.component';
 import { InvitationsService } from './../shared/data/invitations.service';
 import { FriendsService } from './../shared/data/friends.service';
@@ -40,11 +41,16 @@ export class HomePageComponent implements OnInit {
   currentComponent = 'chat';
 
   async ngOnInit(): Promise<void> {
+    console.log(CurrentDate.getCurrentDate());
     const resultF = await this.contactServiec.getListFriends({
       id: this.userId,
     });
     const resultI = await this.contactServiec.getListInvitations({
       id: this.userId,
+    });
+
+    this.storageService.isUpdata.subscribe(() => {
+      this.userName = this.storageService.get('userName');
     });
 
     this.invitationsService.currentNumber.subscribe(
