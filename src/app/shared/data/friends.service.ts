@@ -9,6 +9,8 @@ export class FriendsService {
   private number = 0;
   private numberBh = new BehaviorSubject<number>(0);
   public currentNumber = this.numberBh.asObservable();
+  private listFriend = new BehaviorSubject<any>([]);
+  public currentListFriend = this.listFriend.asObservable();
   setList(value) {
     this.listfriends = value;
   }
@@ -26,5 +28,9 @@ export class FriendsService {
   }
   changeNumber(value) {
     this.numberBh.next(value);
+  }
+
+  changeList(value) {
+    this.listFriend.next(value);
   }
 }

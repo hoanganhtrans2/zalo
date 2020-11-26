@@ -6,7 +6,7 @@ import * as io from 'socket.io-client';
   providedIn: 'root',
 })
 export class NotifyService {
-  readonly url = 'http://localhost:3000';
+  readonly url = 'http://localhost:3200';
   socket: any;
 
   constructor() {

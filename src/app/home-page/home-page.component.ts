@@ -49,28 +49,26 @@ export class HomePageComponent implements OnInit {
       id: this.userId,
     });
 
+    this.friendsService.changeList(resultF.Items);
+
+    this.invitationsService.changeList(resultI.Items);
+
+    this.invitationsService.changeNumber(resultI.Count);
+
+    this.invitationsService.currentNumber.subscribe((data) => {
+      this.notifyInvitations = data;
+    });
+
     this.storageService.isUpdata.subscribe(() => {
       this.userName = this.storageService.get('userName');
     });
 
-    this.invitationsService.currentNumber.subscribe(
-      (value) => (this.notifyInvitations = value)
-    );
-
     this.notifyService.connectNotify(this.userId);
 
-    this.notifyService.listenNotify().subscribe((date) => {
-      this.invitationsService.changeList([]);
-      this.openNotifyPanel(date);
-      console.log(date);
+    this.notifyService.listenNotify().subscribe((data) => {
+      this.preLoadInvitation();
+      this.openNotifyPanel(data);
     });
-
-    this.friendsService.setNotify(resultF.Count);
-    this.invitationsService.setNotify(resultI.Count);
-
-    this.notifyFriend = this.friendsService.getNotify();
-    this.notifyInvitations = this.invitationsService.getNotify();
-
     this.friendsService.setList(resultF.Items);
     this.invitationsService.setList(resultI.Items);
   }
@@ -79,7 +77,9 @@ export class HomePageComponent implements OnInit {
     const resultI = await this.contactServiec.getListInvitations({
       id: this.userId,
     });
+    this.invitationsService.changeNumber(resultI.Count);
     this.invitationsService.changeList(resultI.Items);
+    this.invitationsService.setList(resultI.Items);
   }
 
   goToChat() {
@@ -100,11 +100,6 @@ export class HomePageComponent implements OnInit {
   }
 
   openNotifyPanel(data) {
-    // console.log('nhaanj');
-    // let data = {
-    //   username: 'honag anh',
-    //   imgurl: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
-    // };
     this.matSnackBar.openFromComponent(NotifyPanelComponent, {
       data: data,
       duration: 3000,

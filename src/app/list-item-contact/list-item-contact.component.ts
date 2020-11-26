@@ -1,9 +1,10 @@
+import { InvitationsService } from './../shared/data/invitations.service';
 import { ContactService } from './../service/contact.service';
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../service/storage.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FriendsService } from './../shared/data/friends.service';
-
+import { typeWithParameters } from '@angular/compiler/src/render3/util';
 @Component({
   selector: 'app-list-item-contact',
   templateUrl: './list-item-contact.component.html',
@@ -14,22 +15,23 @@ export class ListItemContactComponent implements OnInit {
     private contactServiec: ContactService,
     private snackBar: MatSnackBar,
     private storageService: StorageService,
-    private friendsService: FriendsService
+    private friendsService: FriendsService,
+    private invitationsService: InvitationsService
   ) {}
   selectedOptions: any;
-  listUserChat = [];
+  listFriend = [];
   ngOnInit(): void {
-    this.listUserChat = this.friendsService.getList();
-    this.getListFriends();
+    this.listFriend = this.friendsService.getList();
+    this.friendsService.currentListFriend.subscribe((data) => {
+      this.listFriend = data;
+    });
   }
 
   async getListFriends(): Promise<any> {
     const id = this.storageService.get('userId');
     const result = await this.contactServiec.getListFriends({ id: id });
-    this.listUserChat = result.Items;
-    this.friendsService.setNotify(result.Count);
-    this.friendsService.setList(result.Items);
-    console.log(this.listUserChat);
+    this.listFriend = result.Items;
+    this.friendsService.changeList(this.listFriend);
   }
   async deletefriend() {
     let model = {
@@ -39,7 +41,7 @@ export class ListItemContactComponent implements OnInit {
     let res = await this.contactServiec.deleteFriend(model);
     if (res.message) {
       let result = await this.getListFriends();
-      this.snackBar.open(res.message, '', {
+      this.snackBar.open('Xóa Bạn Thành Công', '', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',

@@ -73,7 +73,6 @@ export class DialogFindfriendComponent implements OnInit {
     let idreceiver = this.dataUser.userid;
     let modelNotify = {
       idsender: this.storageService.get('userId'),
-
       username: this.storageService.get('userName'),
       avt: this.storageService.get('avt'),
     };

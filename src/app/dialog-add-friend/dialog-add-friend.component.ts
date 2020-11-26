@@ -5,6 +5,7 @@ import { Inject } from '@angular/core';
 import { ContactService } from './../service/contact.service';
 import { StorageService } from '../service/storage.service';
 import { Router } from '@angular/router';
+import { FriendsService } from './../shared/data/friends.service';
 
 export interface obj {
   idYeuCauKetBan: string;
@@ -21,9 +22,7 @@ export class DialogAddFriendComponent implements OnInit {
     private dialogRef: MatDialogRef<DialogAddFriendComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private contactServiec: ContactService,
-    private storageService: StorageService,
-    private router: Router,
-    private notifyService: NotifyService
+    private storageService: StorageService
   ) {}
 
   obj: obj = {

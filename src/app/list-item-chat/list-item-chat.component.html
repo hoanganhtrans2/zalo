@@ -9,17 +9,18 @@
 
 <!--  -->
 <div>
-  <mat-selection-list [multiple]="false">
+  <mat-selection-list [multiple]="false" [(ngModel)]="selectedOptions">
     <mat-list-option
       fxLayout="column"
       *ngFor="let item of listUserChat"
       [value]="item"
+      (click)="changeSelected()"
     >
       <mat-card class="item-chat">
         <mat-card-header>
-          <img [src]="item.imgUrl" alt="avt" mat-card-avatar />
+          <img [src]="item.imgurl" alt="avt" mat-card-avatar />
           <div class="img-user"></div>
-          <mat-card-title>{{ item.name }}</mat-card-title>
+          <mat-card-title>{{ item.username }}</mat-card-title>
           <mat-card-subtitle>{{ item.lastMessage }}</mat-card-subtitle>
         </mat-card-header>
       </mat-card>
