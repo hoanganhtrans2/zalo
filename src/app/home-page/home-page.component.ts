@@ -69,10 +69,25 @@ export class HomePageComponent implements OnInit {
       this.preLoadInvitation();
       this.openNotifyPanel(data);
     });
+    this.notifyService.listenAccept().subscribe((data) => {
+      this.preLoadInvitation();
+      this.openNotifyPanel(data);
+    });
+
+    this.notifyService.listenDelete().subscribe(() => {
+      this.preLoadContact();
+    });
     this.friendsService.setList(resultF.Items);
     this.invitationsService.setList(resultI.Items);
   }
 
+  async preLoadContact() {
+    const resultI = await this.contactServiec.getListFriends({
+      id: this.userId,
+    });
+    this.friendsService.changeList(resultI.Items);
+    this.friendsService.setList(resultI.Items);
+  }
   async preLoadInvitation() {
     const resultI = await this.contactServiec.getListInvitations({
       id: this.userId,

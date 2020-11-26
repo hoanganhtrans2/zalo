@@ -1,4 +1,3 @@
-import { NotifyService } from './../service/notify.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
@@ -33,7 +32,7 @@ export class DialogAddFriendComponent implements OnInit {
 
   async accept() {
     let res = await this.contactServiec.acceptFriend(this.obj);
-    this.dialogRef.close('Đã là bạn bè');
+    this.dialogRef.close('true');
   }
   async deny() {
     let res = await this.contactServiec.denyFriend(this.obj);

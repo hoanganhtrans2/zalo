@@ -1,4 +1,4 @@
-import { FriendsService } from './../shared/data/friends.service';
+import { NotifyService } from './../service/notify.service';
 import { InvitationsService } from './../shared/data/invitations.service';
 import { DialogAddFriendComponent } from './../dialog-add-friend/dialog-add-friend.component';
 import { ContactService } from './../service/contact.service';
@@ -18,7 +18,7 @@ export class ListItemInvitationsComponent implements OnInit {
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     private invitationsService: InvitationsService,
-    private friendsService: FriendsService
+    private notifyService: NotifyService
   ) {}
   listinvitions = [];
   selectedOptions: any;
@@ -28,7 +28,7 @@ export class ListItemInvitationsComponent implements OnInit {
     this.invitationsService.currentListI.subscribe((list) => {
       this.listinvitions = list;
     });
-    this.listinvitions = this.invitationsService.getList();
+    //this.listinvitions = this.invitationsService.getList();
     // this.getListFriendInvitations();
   }
 
@@ -36,10 +36,6 @@ export class ListItemInvitationsComponent implements OnInit {
     const id = this.storageService.get('userId');
     const result = await this.contactServiec.getListInvitations({ id: id });
     this.listinvitions = result.Items;
-    let resultF = await this.contactServiec.getListFriends({
-      id: id,
-    });
-    this.friendsService.changeList(resultF.Items);
     this.invitationsService.changeNumber(result.Count);
     this.invitationsService.changeList(result.Items);
   }
@@ -51,7 +47,11 @@ export class ListItemInvitationsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result);
+        if (result === 'true') {
+          result = 'Đã là bạn bè';
+          this.apceptLoimoi();
+        }
+
         this.snackBar.open(result, '', {
           duration: 3000,
           horizontalPosition: 'center',
@@ -61,5 +61,15 @@ export class ListItemInvitationsComponent implements OnInit {
         this.getListFriendInvitations();
       }
     });
+  }
+  apceptLoimoi() {
+    let idreceiver = this.selectedOptions[0].userid;
+    let modelNotify = {
+      idsender: this.storageService.get('userId'),
+      username: this.storageService.get('userName'),
+      avt: this.storageService.get('avt'),
+      message: 'vừa đồng ý lời mời kết bạn',
+    };
+    this.notifyService.sendAccept(idreceiver, modelNotify);
   }
 }

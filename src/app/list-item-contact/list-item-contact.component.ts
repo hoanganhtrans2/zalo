@@ -1,3 +1,4 @@
+import { NotifyService } from './../service/notify.service';
 import { InvitationsService } from './../shared/data/invitations.service';
 import { ContactService } from './../service/contact.service';
 import { Component, OnInit } from '@angular/core';
@@ -16,14 +17,18 @@ export class ListItemContactComponent implements OnInit {
     private snackBar: MatSnackBar,
     private storageService: StorageService,
     private friendsService: FriendsService,
-    private invitationsService: InvitationsService
+    private invitationsService: InvitationsService,
+    private notifyService: NotifyService
   ) {}
   selectedOptions: any;
   listFriend = [];
   ngOnInit(): void {
-    this.listFriend = this.friendsService.getList();
+    // this.listFriend = this.friendsService.getList();
     this.friendsService.currentListFriend.subscribe((data) => {
       this.listFriend = data;
+    });
+    this.invitationsService.currentListI.subscribe(() => {
+      this.getListFriends();
     });
   }
 
@@ -41,6 +46,7 @@ export class ListItemContactComponent implements OnInit {
     let res = await this.contactServiec.deleteFriend(model);
     if (res.message) {
       let result = await this.getListFriends();
+      this.asyncdelete(model.idIsDeleted);
       this.snackBar.open('Xóa Bạn Thành Công', '', {
         duration: 3000,
         horizontalPosition: 'center',
@@ -48,5 +54,11 @@ export class ListItemContactComponent implements OnInit {
         panelClass: ['center'],
       });
     }
+  }
+
+  asyncdelete(idreceiver) {
+    this.notifyService.sendDelete(idreceiver, {
+      mess: 'xoas banj roif',
+    });
   }
 }

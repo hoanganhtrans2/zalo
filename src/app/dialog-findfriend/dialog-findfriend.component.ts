@@ -75,6 +75,7 @@ export class DialogFindfriendComponent implements OnInit {
       idsender: this.storageService.get('userId'),
       username: this.storageService.get('userName'),
       avt: this.storageService.get('avt'),
+      message: 'vừa gửi lời mời kết bạn',
     };
     let res = await this.contactService.sendFriendInvitions(model);
     if (res.message) {

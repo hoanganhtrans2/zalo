@@ -21,9 +21,33 @@ export class NotifyService {
   sendNotifyInvitations(id: string, model: any) {
     this.socket.emit('userconnect', { id, model });
   }
+
+  sendDelete(id: string, model: any) {
+    this.socket.emit('deletefriend', { id, model });
+  }
+
+  sendAccept(id: string, model: any) {
+    this.socket.emit('sendaccept', { id, model });
+  }
+  listenAccept() {
+    return new Observable((observer) => {
+      this.socket.on('accept', (obj) => {
+        observer.next(obj);
+      });
+    });
+  }
+
   listenNotify() {
     return new Observable((observer) => {
       this.socket.on('notify', (obj) => {
+        observer.next(obj);
+      });
+    });
+  }
+
+  listenDelete() {
+    return new Observable((observer) => {
+      this.socket.on('delete', (obj) => {
         observer.next(obj);
       });
     });
