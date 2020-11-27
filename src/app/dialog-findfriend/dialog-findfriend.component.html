@@ -10,7 +10,11 @@
   fxLayoutAlign="space-around center"
   class="iId"
 >
-  <input [(ngModel)]="userid" placeholder="Nhập số điện thoại" />
+  <input
+    [(ngModel)]="userid"
+    placeholder="Nhập số điện thoại"
+    (keyup.enter)="findid()"
+  />
   <button mat-icon-button (click)="findid()">
     <mat-icon>search</mat-icon>
   </button>
@@ -18,6 +22,10 @@
 <div style="color: red; margin-top: 50px" *ngIf="isShowErrPhoneNumber">
   * nhập sai định dạng
 </div>
+<div *ngIf="isShowProcess">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
 <div
   *ngIf="isShowNoDataFound"
   style="

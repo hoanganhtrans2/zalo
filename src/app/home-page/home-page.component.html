@@ -77,6 +77,16 @@
   </div>
 
   <div fxFlex="70 3 70" class="content-chat">
-    <app-content-chat></app-content-chat>
+    <app-content-chat *ngIf="isShowContentChat"></app-content-chat>
+
+    <div
+      *ngIf="!isShowContentChat"
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      fxFill
+      style="background-color: white"
+    >
+      <img src="../../assets/zalo.png" alt="panel" />
+    </div>
   </div>
 </div>

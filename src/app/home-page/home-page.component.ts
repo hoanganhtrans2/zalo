@@ -39,6 +39,7 @@ export class HomePageComponent implements OnInit {
   notifyFriend: number;
   notifyInvitations: number;
   currentComponent = 'chat';
+  isShowContentChat = false;
 
   async ngOnInit(): Promise<void> {
     console.log(CurrentDate.getCurrentDate());
@@ -99,12 +100,15 @@ export class HomePageComponent implements OnInit {
 
   goToChat() {
     this.currentComponent = 'chat';
+    this.isShowContentChat = true;
   }
   goToContact() {
     this.currentComponent = 'contact';
+    this.isShowContentChat = false;
   }
   goToAddFriend() {
     this.currentComponent = 'invitations';
+    this.isShowContentChat = false;
   }
 
   async getCurrentUserInfo() {

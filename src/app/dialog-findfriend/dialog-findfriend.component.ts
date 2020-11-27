@@ -38,8 +38,10 @@ export class DialogFindfriendComponent implements OnInit {
   isShowErrPhoneNumber = false;
   ishowInfo = false;
   isShowNoDataFound = false;
+  isShowProcess = false;
 
   async findid() {
+    this.isShowProcess = true;
     let model = {
       id: this.storageService.get('userId'),
       idfind: this.userid,
@@ -48,7 +50,6 @@ export class DialogFindfriendComponent implements OnInit {
     if (this.regx.test(this.userid)) {
       this.isShowErrPhoneNumber = false;
       let res = await this.contactService.findFriend(model);
-      console.log(res);
       if (res.Count == 0) {
         this.isShowNoDataFound = true;
       }
@@ -58,8 +59,8 @@ export class DialogFindfriendComponent implements OnInit {
       } else {
         this.dataUser.isfriend = true;
       }
-      console.log(this.dataUser);
       this.ishowInfo = true;
+      this.isShowProcess = false;
     } else {
       this.isShowErrPhoneNumber = true;
       this.userid = '';

@@ -24,6 +24,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { LogInComponent } from './log-in/log-in.component';
 import { RegisterComponent } from './register/register.component';
@@ -68,6 +70,7 @@ import { NotifyPanelComponent } from './notify-panel/notify-panel.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatProgressBarModule,
     MatCardModule,
     MatFormFieldModule,
     MatButtonModule,
@@ -75,6 +78,7 @@ import { NotifyPanelComponent } from './notify-panel/notify-panel.component';
     MatInputModule,
     MatIconModule,
     MatTabsModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     MatButtonToggleModule,
