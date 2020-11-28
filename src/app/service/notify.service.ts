@@ -10,7 +10,6 @@ export class NotifyService {
   socket: any;
 
   constructor() {
-    console.log('run here');
     this.socket = io.io(this.url, { transports: ['websocket'] });
   }
 
@@ -48,6 +47,21 @@ export class NotifyService {
   listenDelete() {
     return new Observable((observer) => {
       this.socket.on('delete', (obj) => {
+        observer.next(obj);
+      });
+    });
+  }
+  joinRom(id) {
+    this.socket.emit('joinroom', { id: id });
+  }
+
+  sendMessage(id: string, model: any) {
+    this.socket.emit('sendmessage', { id, model });
+  }
+
+  listenMessage() {
+    return new Observable((observer) => {
+      this.socket.on('getmessage', (obj) => {
         observer.next(obj);
       });
     });

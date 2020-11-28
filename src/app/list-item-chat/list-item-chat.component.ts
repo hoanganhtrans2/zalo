@@ -1,8 +1,9 @@
-import { FriendsService } from './../shared/data/friends.service';
-import { ContactService } from './../service/contact.service';
+import { NotifyService } from './../service/notify.service';
+import { DataChatService } from './../shared/data/data-chat.service';
 import { StorageService } from './../service/storage.service';
 import { ChatService } from './../service/chat.service';
 import { Component, OnInit } from '@angular/core';
+
 @Component({
   selector: 'app-list-item-chat',
   templateUrl: './list-item-chat.component.html',
@@ -11,29 +12,24 @@ import { Component, OnInit } from '@angular/core';
 export class ListItemChatComponent implements OnInit {
   constructor(
     private chatService: ChatService,
+    private dataChatService: DataChatService,
     private storageService: StorageService,
-    private friendService: FriendsService,
-    private contactService: ContactService
+    private notifyService: NotifyService
   ) {}
 
   listUserChat = [];
   selectedOptions: any;
   selectedValue = 1;
   ngOnInit(): void {
-    this.listUserChat = this.friendService.getList();
-    this.friendService.currentListFriend.subscribe((value) => {
-      this.listUserChat = value;
+    this.dataChatService.currentListItemChat.subscribe((list) => {
+      this.listUserChat = list;
     });
-    //
-    // this.getListFriends();
   }
-  async getListFriends(): Promise<any> {
+  async getListItemChat(): Promise<any> {
     const id = this.storageService.get('userId');
-    const result = await this.contactService.getListFriends({ id: id });
-    this.listUserChat = result.Items;
-    this.chatService.changSelect(this.listUserChat[0]);
   }
   changeSelected() {
-    this.chatService.changSelect(this.selectedOptions[0]);
+    console.log(this.selectedOptions[0]);
+    this.dataChatService.changSelect(this.selectedOptions[0]);
   }
 }

@@ -62,6 +62,7 @@ export class DialogFindfriendComponent implements OnInit {
       this.ishowInfo = true;
       this.isShowProcess = false;
     } else {
+      this.isShowProcess = false;
       this.isShowErrPhoneNumber = true;
       this.userid = '';
     }
@@ -87,8 +88,8 @@ export class DialogFindfriendComponent implements OnInit {
         panelClass: ['center'],
       });
 
-      this.dialogRef.close();
       this.notifyService.sendNotifyInvitations(idreceiver, modelNotify);
+      this.dialogRef.close();
     }
   }
 }

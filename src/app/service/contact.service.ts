@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-import { UserModel } from '../shared/model/user.model';
+import { HttpClient } from '@angular/common/http';
 
 export interface UserId {
   id: string;

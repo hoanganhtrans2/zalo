@@ -1,10 +1,12 @@
+import { DataChatService } from './../shared/data/data-chat.service';
+import { ChatService } from './../service/chat.service';
 import { CurrentDate } from './../shared/helper/CurrentDate.Helper';
 import { NotifyPanelComponent } from './../notify-panel/notify-panel.component';
-import { InvitationsService } from './../shared/data/invitations.service';
-import { FriendsService } from './../shared/data/friends.service';
+import { DataInvitationsService } from './../shared/data/data-invitations.service';
+import { DataFriendsService } from './../shared/data/data-friends.service';
 import { DialogFindfriendComponent } from './../dialog-findfriend/dialog-findfriend.component';
 import { from } from 'rxjs';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogUpdateComponent } from '../dialog-update/dialog-update.component';
@@ -13,7 +15,6 @@ import { GetUserService } from '../service/get-user.service';
 import { ContactService } from './../service/contact.service';
 import { NotifyService } from './../service/notify.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -26,9 +27,11 @@ export class HomePageComponent implements OnInit {
     public matSnackBar: MatSnackBar,
     private storageService: StorageService,
     private userService: GetUserService,
+    private chatService: ChatService,
+    private dataChatService: DataChatService,
     private contactServiec: ContactService,
-    private friendsService: FriendsService,
-    private invitationsService: InvitationsService,
+    private dataFriendsService: DataFriendsService,
+    private dataInvitationsService: DataInvitationsService,
     private notifyService: NotifyService
   ) {}
   userName = this.storageService.get('userName');
@@ -42,21 +45,37 @@ export class HomePageComponent implements OnInit {
   isShowContentChat = false;
 
   async ngOnInit(): Promise<void> {
-    console.log(CurrentDate.getCurrentDate());
-    const resultF = await this.contactServiec.getListFriends({
-      id: this.userId,
+    Promise.all([
+      this.contactServiec
+        .getListFriends({
+          id: this.userId,
+        })
+        .then((value) => {
+          this.dataFriendsService.changeList(value['Items']);
+        }),
+      this.contactServiec
+        .getListInvitations({
+          id: this.userId,
+        })
+        .then((value) => {
+          this.dataInvitationsService.changeList(value['Items']);
+          this.dataInvitationsService.changeNumber(value['Count']);
+        }),
+      this.chatService
+        .getListRoom({
+          id: this.userId,
+        })
+        .then((room) => {
+          this.dataChatService.changeList(room);
+          room.forEach((element) => {
+            this.notifyService.joinRom(element.infoRoom.roomid);
+          });
+        }),
+    ]).catch((reason) => {
+      console.log(reason);
     });
-    const resultI = await this.contactServiec.getListInvitations({
-      id: this.userId,
-    });
 
-    this.friendsService.changeList(resultF.Items);
-
-    this.invitationsService.changeList(resultI.Items);
-
-    this.invitationsService.changeNumber(resultI.Count);
-
-    this.invitationsService.currentNumber.subscribe((data) => {
+    this.dataInvitationsService.currentNumber.subscribe((data) => {
       this.notifyInvitations = data;
     });
 
@@ -78,24 +97,22 @@ export class HomePageComponent implements OnInit {
     this.notifyService.listenDelete().subscribe(() => {
       this.preLoadContact();
     });
-    this.friendsService.setList(resultF.Items);
-    this.invitationsService.setList(resultI.Items);
   }
 
   async preLoadContact() {
     const resultI = await this.contactServiec.getListFriends({
       id: this.userId,
     });
-    this.friendsService.changeList(resultI.Items);
-    this.friendsService.setList(resultI.Items);
+    this.dataFriendsService.changeList(resultI.Items);
+    this.dataFriendsService.setList(resultI.Items);
   }
   async preLoadInvitation() {
     const resultI = await this.contactServiec.getListInvitations({
       id: this.userId,
     });
-    this.invitationsService.changeNumber(resultI.Count);
-    this.invitationsService.changeList(resultI.Items);
-    this.invitationsService.setList(resultI.Items);
+    this.dataInvitationsService.changeNumber(resultI.Count);
+    this.dataInvitationsService.changeList(resultI.Items);
+    this.dataInvitationsService.setList(resultI.Items);
   }
 
   goToChat() {

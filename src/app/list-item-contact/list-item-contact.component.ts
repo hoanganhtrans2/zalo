@@ -1,10 +1,10 @@
 import { NotifyService } from './../service/notify.service';
-import { InvitationsService } from './../shared/data/invitations.service';
+import { DataInvitationsService } from './../shared/data/data-invitations.service';
 import { ContactService } from './../service/contact.service';
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../service/storage.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { FriendsService } from './../shared/data/friends.service';
+import { DataFriendsService } from './../shared/data/data-friends.service';
 import { typeWithParameters } from '@angular/compiler/src/render3/util';
 @Component({
   selector: 'app-list-item-contact',
@@ -16,18 +16,18 @@ export class ListItemContactComponent implements OnInit {
     private contactServiec: ContactService,
     private snackBar: MatSnackBar,
     private storageService: StorageService,
-    private friendsService: FriendsService,
-    private invitationsService: InvitationsService,
+    private dataFriendsService: DataFriendsService,
+    private dataInvitationsService: DataInvitationsService,
     private notifyService: NotifyService
   ) {}
   selectedOptions: any;
   listFriend = [];
   ngOnInit(): void {
-    // this.listFriend = this.friendsService.getList();
-    this.friendsService.currentListFriend.subscribe((data) => {
+    // this.listFriend = this.dataFriendsService.getList();
+    this.dataFriendsService.currentListFriend.subscribe((data) => {
       this.listFriend = data;
     });
-    this.invitationsService.currentListI.subscribe(() => {
+    this.dataInvitationsService.currentListI.subscribe(() => {
       this.getListFriends();
     });
   }
@@ -36,7 +36,7 @@ export class ListItemContactComponent implements OnInit {
     const id = this.storageService.get('userId');
     const result = await this.contactServiec.getListFriends({ id: id });
     this.listFriend = result.Items;
-    this.friendsService.changeList(this.listFriend);
+    this.dataFriendsService.changeList(this.listFriend);
   }
   async deletefriend() {
     let model = {

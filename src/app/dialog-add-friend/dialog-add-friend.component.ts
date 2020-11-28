@@ -4,7 +4,7 @@ import { Inject } from '@angular/core';
 import { ContactService } from './../service/contact.service';
 import { StorageService } from '../service/storage.service';
 import { Router } from '@angular/router';
-import { FriendsService } from './../shared/data/friends.service';
+import { DataFriendsService } from './../shared/data/data-friends.service';
 
 export interface obj {
   idYeuCauKetBan: string;
@@ -24,18 +24,12 @@ export class DialogAddFriendComponent implements OnInit {
     private storageService: StorageService
   ) {}
 
-  obj: obj = {
-    idYeuCauKetBan: this.data.dataUser.userid,
-    idDongYKetBan: this.storageService.get('userId'),
-  };
   ngOnInit(): void {}
 
-  async accept() {
-    let res = await this.contactServiec.acceptFriend(this.obj);
+  accept() {
     this.dialogRef.close('true');
   }
-  async deny() {
-    let res = await this.contactServiec.denyFriend(this.obj);
-    this.dialogRef.close('Đã từ chối lời mời kết bạn');
+  deny() {
+    this.dialogRef.close('false');
   }
 }

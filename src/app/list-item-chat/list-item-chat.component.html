@@ -18,9 +18,9 @@
     >
       <mat-card class="item-chat">
         <mat-card-header>
-          <img [src]="item.imgurl" alt="avt" mat-card-avatar />
+          <img [src]="item.infoUser.imgurl" alt="avt" mat-card-avatar />
           <div class="img-user"></div>
-          <mat-card-title>{{ item.username }}</mat-card-title>
+          <mat-card-title>{{ item.infoUser.username }}</mat-card-title>
           <mat-card-subtitle>{{ item.lastMessage }}</mat-card-subtitle>
         </mat-card-header>
       </mat-card>
