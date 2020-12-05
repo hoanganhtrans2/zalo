@@ -55,8 +55,8 @@ export class NotifyService {
     this.socket.emit('joinroom', { id: id });
   }
 
-  sendMessage(id: string, model: any) {
-    this.socket.emit('sendmessage', { id, model });
+  sendMessage(message: any) {
+    this.socket.emit('sendmessage', { message });
   }
 
   listenMessage() {

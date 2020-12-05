@@ -55,14 +55,15 @@ export class ListItemInvitationsComponent implements OnInit {
       idDongYKetBan: this.storageService.get('userId'),
     };
     dialogRef.afterClosed().subscribe((result) => {
-      this.showMessage('Đang xử lý', 2000);
       if (result === 'true') {
+        this.showMessage('Đang xử lý', 2000);
         this.contactServiec.acceptFriend(obj).then((value) => {
           this.getListFriendInvitations();
           this.apceptLoimoi();
           this.showMessage('Đã là bạn bè', 3000);
         });
-      } else {
+      } else if (result == 'false') {
+        this.showMessage('Đang xử lý', 2000);
         this.contactServiec.denyFriend(obj).then((value) => {
           this.getListFriendInvitations();
           this.showMessage('Đã từ chối kết bạn', 3000);

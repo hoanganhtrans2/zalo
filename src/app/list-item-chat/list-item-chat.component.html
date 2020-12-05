@@ -12,16 +12,16 @@
   <mat-selection-list [multiple]="false" [(ngModel)]="selectedOptions">
     <mat-list-option
       fxLayout="column"
-      *ngFor="let item of listUserChat"
-      [value]="item"
+      *ngFor="let user of listRoomChat"
+      [value]="user"
       (click)="changeSelected()"
     >
       <mat-card class="item-chat">
         <mat-card-header>
-          <img [src]="item.infoUser.imgurl" alt="avt" mat-card-avatar />
+          <img [src]="user.imgurl" alt="avt" mat-card-avatar />
           <div class="img-user"></div>
-          <mat-card-title>{{ item.infoUser.username }}</mat-card-title>
-          <mat-card-subtitle>{{ item.lastMessage }}</mat-card-subtitle>
+          <mat-card-title>{{ user.username }}</mat-card-title>
+          <mat-card-subtitle>{{ lastMessage }}</mat-card-subtitle>
         </mat-card-header>
       </mat-card>
 

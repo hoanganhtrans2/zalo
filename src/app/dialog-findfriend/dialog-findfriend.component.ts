@@ -46,7 +46,7 @@ export class DialogFindfriendComponent implements OnInit {
       id: this.storageService.get('userId'),
       idfind: this.userid,
     };
-    console.log(model);
+
     if (this.regx.test(this.userid)) {
       this.isShowErrPhoneNumber = false;
       let res = await this.contactService.findFriend(model);

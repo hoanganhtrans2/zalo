@@ -1,8 +1,12 @@
-<div>
-  <mat-selection-list [multiple]="false" [(ngModel)]="selectedOptions">
+<div style="height: 100%">
+  <mat-selection-list
+    style="overflow: auto"
+    [multiple]="false"
+    [(ngModel)]="selectedOptions"
+  >
     <mat-list-option
-      fxLayout="column"
       *ngFor="let item of listFriend"
+      fxLayout="column"
       [value]="item"
     >
       <mat-card

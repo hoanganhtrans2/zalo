@@ -20,6 +20,7 @@ export class ContactService {
   async getListInvitations(model: UserId): Promise<any> {
     return await this.http
       .post('http://localhost:3000/api/friend/getListFriendsInvitations', model)
+
       .toPromise();
   }
 

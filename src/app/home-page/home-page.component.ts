@@ -1,11 +1,12 @@
+import { UserModel } from './../shared/model/user.model';
+import { DbLocalService } from './../shared/data/db.service';
 import { DataChatService } from './../shared/data/data-chat.service';
 import { ChatService } from './../service/chat.service';
-import { CurrentDate } from './../shared/helper/CurrentDate.Helper';
 import { NotifyPanelComponent } from './../notify-panel/notify-panel.component';
 import { DataInvitationsService } from './../shared/data/data-invitations.service';
 import { DataFriendsService } from './../shared/data/data-friends.service';
 import { DialogFindfriendComponent } from './../dialog-findfriend/dialog-findfriend.component';
-import { from } from 'rxjs';
+
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +16,8 @@ import { GetUserService } from '../service/get-user.service';
 import { ContactService } from './../service/contact.service';
 import { NotifyService } from './../service/notify.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MessageModel } from '../shared/model/message.model';
+import { RoomModel } from '../shared/model/room.model';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -32,7 +35,8 @@ export class HomePageComponent implements OnInit {
     private contactServiec: ContactService,
     private dataFriendsService: DataFriendsService,
     private dataInvitationsService: DataInvitationsService,
-    private notifyService: NotifyService
+    private notifyService: NotifyService,
+    private dbLocal: DbLocalService
   ) {}
   userName = this.storageService.get('userName');
   userId = this.storageService.get('userId');
@@ -66,13 +70,27 @@ export class HomePageComponent implements OnInit {
           id: this.userId,
         })
         .then((room) => {
-          this.dataChatService.changeList(room);
-          room.forEach((element) => {
-            this.notifyService.joinRom(element.infoRoom.roomid);
-          });
+          if (room['Items']) {
+            this.dataChatService.changeList(room['Items']);
+            room['Items'].forEach((element) => {
+              this.notifyService.joinRom(element.infoRoom.roomid);
+              this.dbLocal.RoomObject[element.infoRoom.roomid] = new RoomModel(
+                element.infoRoom.roomid,
+                'd',
+                []
+              );
+              this.dbLocal.addNewRoom(
+                new RoomModel(element.infoRoom.roomid, 'd', [])
+              );
+            });
+          }
         }),
     ]).catch((reason) => {
       console.log(reason);
+    });
+
+    this.dataChatService.currentIsShowContentChat.subscribe((value) => {
+      this.isShowContentChat = value;
     });
 
     this.dataInvitationsService.currentNumber.subscribe((data) => {
@@ -84,6 +102,22 @@ export class HomePageComponent implements OnInit {
     });
 
     this.notifyService.connectNotify(this.userId);
+
+    this.notifyService.listenMessage().subscribe((data) => {
+      this.dataChatService.changStateMessage(true);
+      this.dbLocal.addMessage(
+        data['PK'],
+        new MessageModel(
+          data['PK'],
+          data['SK'],
+          data['owner'],
+          data['time'],
+          data['username'],
+          data['avt'],
+          data['message']
+        )
+      );
+    });
 
     this.notifyService.listenNotify().subscribe((data) => {
       this.preLoadInvitation();
@@ -104,7 +138,6 @@ export class HomePageComponent implements OnInit {
       id: this.userId,
     });
     this.dataFriendsService.changeList(resultI.Items);
-    this.dataFriendsService.setList(resultI.Items);
   }
   async preLoadInvitation() {
     const resultI = await this.contactServiec.getListInvitations({
@@ -112,20 +145,19 @@ export class HomePageComponent implements OnInit {
     });
     this.dataInvitationsService.changeNumber(resultI.Count);
     this.dataInvitationsService.changeList(resultI.Items);
-    this.dataInvitationsService.setList(resultI.Items);
   }
 
   goToChat() {
     this.currentComponent = 'chat';
-    this.isShowContentChat = true;
+    this.dataChatService.changeIsShow(false);
   }
   goToContact() {
     this.currentComponent = 'contact';
-    this.isShowContentChat = false;
+    this.dataChatService.changeIsShow(false);
   }
   goToAddFriend() {
     this.currentComponent = 'invitations';
-    this.isShowContentChat = false;
+    this.dataChatService.changeIsShow(false);
   }
 
   async getCurrentUserInfo() {

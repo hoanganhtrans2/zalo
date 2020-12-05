@@ -1,11 +1,14 @@
 import { NotifyService } from './../service/notify.service';
 import { DataInvitationsService } from './../shared/data/data-invitations.service';
 import { ContactService } from './../service/contact.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { OnInit } from '@angular/core';
+import { AfterViewChecked } from '@angular/core';
+import { ElementRef } from '@angular/core';
+import { ViewChild } from '@angular/core';
 import { StorageService } from '../service/storage.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { DataFriendsService } from './../shared/data/data-friends.service';
-import { typeWithParameters } from '@angular/compiler/src/render3/util';
 @Component({
   selector: 'app-list-item-contact',
   templateUrl: './list-item-contact.component.html',

@@ -27,7 +27,54 @@
       </button>
     </div>
     <!-- nội dung đoạn chatchat -->
-    <div class="content-chat" fxFlex="75"></div>
+    <div class="content-chat" fxFlex="75">
+      <div
+        fxLayoutGap="10px grid"
+        fxFlex="row"
+        fxLayout="column-reverse"
+        #scrollContentChat
+        style="overflow: auto; scrollbar-width: 0px; height: 100%"
+      >
+        <div *ngFor="let mess of listConversation">
+          <div [ngSwitch]="mess.owner">
+            <div
+              *ngSwitchCase="userid"
+              fxLayout="row"
+              fxLayoutAlign="end start"
+              style="padding-right: 20px"
+            >
+              <div class="infochat mechat">
+                <div style="padding-right: 4px">
+                  <p>{{ mess.username }}</p>
+                  <div>{{ mess.message }}</div>
+                  <p>{{ mess.time | date: "hh:mm" }}</p>
+                </div>
+              </div>
+              <div class="avtchat me">
+                <img [src]="mess.avt" alt="avt" />
+              </div>
+            </div>
+            <div
+              *ngSwitchDefault
+              fxLayout="row"
+              fxLayoutAlign="start start"
+              style="padding-left: 20px"
+            >
+              <div class="avtchat you">
+                <img [src]="mess.avt" alt="avt" />
+              </div>
+              <div class="infochat youchat">
+                <div style="padding-left: 4px">
+                  <p>{{ mess.username }}</p>
+                  <div>{{ mess.message }}</div>
+                  <p>{{ mess.time | date: "hh:mm" }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- nhập nội dung chatchat -->
     <div class="input-chat" fxFlex="12">
       <div>
@@ -50,10 +97,16 @@
           placeholder="Nhập tin nhắn mới"
           class="message"
           type="text"
-          [formControl]="message"
           style="line-height: 24px; width: 100%"
+          #message
+          (keyup.enter)="sendMessage(message.value); message.value = ''"
+          (blur)="sendMessage(message.value); message.value = ''"
         />
-        <button mat-icon-button fxFlexAlign="end">
+        <button
+          mat-icon-button
+          fxFlexAlign="end"
+          (click)="sendMessage(message.value)"
+        >
           <mat-icon style="color: #72808e">send</mat-icon>
         </button>
       </div>

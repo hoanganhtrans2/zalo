@@ -26,6 +26,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { LogInComponent } from './log-in/log-in.component';
 import { RegisterComponent } from './register/register.component';
@@ -61,6 +62,7 @@ import { NotifyPanelComponent } from './notify-panel/notify-panel.component';
   ],
   imports: [
     MatSnackBarModule,
+    ScrollingModule,
     MatBadgeModule,
     MatDatepickerModule,
     HttpClientModule,
@@ -86,7 +88,6 @@ import { NotifyPanelComponent } from './notify-panel/notify-panel.component';
     MatSelectModule,
     MatListModule,
     SharedModule,
-
     MatNativeDateModule,
   ],
   providers: [AuthGuard, { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],

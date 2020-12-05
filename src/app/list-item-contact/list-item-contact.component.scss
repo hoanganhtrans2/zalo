@@ -53,6 +53,8 @@ mat-list-option {
 .mat-card:not([class*="mat-elevation-z"]) {
   box-shadow: none !important;
 }
+
 mat-selection-list {
   padding-top: 0px !important;
+  height: calc(48px * 12);
 }
