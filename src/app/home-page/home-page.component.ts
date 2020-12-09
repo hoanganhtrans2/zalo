@@ -66,28 +66,33 @@ export class HomePageComponent implements OnInit {
           this.dataInvitationsService.changeNumber(value['Count']);
         }),
       this.chatService
-        .getListRoom({
-          id: this.userId,
+        .getListRoomChat({
+          userid: this.userId,
         })
         .then((room) => {
-          if (room['Items']) {
-            this.dataChatService.changeList(room['Items']);
-            room['Items'].forEach((element) => {
-              this.notifyService.joinRom(element.infoRoom.roomid);
-              this.dbLocal.RoomObject[element.infoRoom.roomid] = new RoomModel(
-                element.infoRoom.roomid,
-                'd',
-                []
-              );
-              this.dbLocal.addNewRoom(
-                new RoomModel(element.infoRoom.roomid, 'd', [])
-              );
-            });
-          }
+          this.dataChatService.changeListRoom(room['Items']);
+          room['Items'].forEach((room) => {
+            this.notifyService.joinRom(room.roomid);
+            Promise.all([
+              this.chatService
+                .getMemberInRoom({ member: room.member.join() })
+                .then((res) => {
+                  this.dbLocal.RoomObject[room.roomid] = new RoomModel(
+                    room.roomid,
+                    room.roomtype,
+                    res.Items
+                  );
+                }),
+            ]);
+          });
         }),
-    ]).catch((reason) => {
-      console.log(reason);
-    });
+    ])
+      .then(() => {
+        console.log(this.dbLocal.RoomObject);
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
 
     this.dataChatService.currentIsShowContentChat.subscribe((value) => {
       this.isShowContentChat = value;

@@ -26,7 +26,7 @@ export class ListItemChatComponent implements OnInit {
   selectedOptions: any;
   selectedValue = 1;
   ngOnInit(): void {
-    this.dataChatService.currentListItemChat.subscribe((list) => {
+    this.dataChatService.currentListRoomChat.subscribe((list) => {
       this.listRoomChat = list;
     });
   }
@@ -36,7 +36,7 @@ export class ListItemChatComponent implements OnInit {
   changeSelected() {
     this.dataChatService.changeIsShow(true);
     if (this.selectedOptions[0]) {
-      let roomid = this.selectedOptions[0].infoRoom.roomid;
+      let roomid = this.selectedOptions[0].roomid;
       this.selectedOptions[0].listmessage = this.dbLocal.getAllMessageFromRoom(
         roomid
       );
@@ -50,7 +50,7 @@ export class ListItemChatComponent implements OnInit {
           this.dbLocal.changeListMessage(value['Items']);
         });
 
-      this.dataChatService.changSelectUser(this.selectedOptions[0]);
+      this.dataChatService.changSelectRoom(this.selectedOptions[0]);
     }
   }
 }

@@ -43,12 +43,12 @@ export class ContentChatComponent implements OnInit, AfterViewChecked {
     this.dbLocalService.currentListMessage.subscribe((value) => {
       this.listConversation = value;
     });
-    this.dataChatService.currentUser.subscribe((user) => {
-      if (user != 'default') {
-        this.userName = user.username;
-        this.avatarUrl = user.imgurl;
-        this.roomid = user.infoRoom.roomid;
-        this.listConversation = user.listmessage;
+    this.dataChatService.currentRoom.subscribe((room) => {
+      if (room != 'default') {
+        this.userName = room.username;
+        this.avatarUrl = room.imgurl;
+        this.roomid = room.roomid;
+        this.listConversation = room.listmessage;
       }
     });
   }
