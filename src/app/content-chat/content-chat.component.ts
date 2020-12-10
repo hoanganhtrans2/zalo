@@ -35,7 +35,6 @@ export class ContentChatComponent implements OnInit, AfterViewChecked {
   userid = this.storageService.get('userId');
   username = this.storageService.get('userName');
   roomChat: RoomModel;
-  userName = 'ZALO';
   lastTimeConnect = 'Truy cập 1 giờ trước';
   listConversation = [];
   messageChat: ChatModel;
@@ -65,7 +64,7 @@ export class ContentChatComponent implements OnInit, AfterViewChecked {
   sendMessage(message: string) {
     if (message.length > 0) {
       let mess = new ChatModel(
-        this.roomid,
+        this.roomChat.roomId,
         this.userid,
         this.username,
         this.avatarUrl,

@@ -42,8 +42,8 @@ export class HomePageComponent implements OnInit {
   ) {}
   userName = this.storageService.get('userName');
   userId = this.storageService.get('userId');
+  avatarUrl = this.storageService.get('avt');
   dataUser: any;
-  avatarUrl = '../../assets/shiba1.jpg';
   notifyChat: number;
   notifyFriend: number;
   notifyInvitations: number;
@@ -83,14 +83,16 @@ export class HomePageComponent implements OnInit {
                       room.roomid,
                       room.roomtype,
                       res.Items,
-                      room.roomname
+                      room.roomname,
+                      this.userId
                     );
                   } else {
                     this.dbLocal.RoomObject[room.roomid] = new RoomModel(
                       room.roomid,
                       room.roomtype,
                       res.Items,
-                      ''
+                      '',
+                      this.userId
                     );
                   }
                 }),
