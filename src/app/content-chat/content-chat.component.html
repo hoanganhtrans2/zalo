@@ -14,8 +14,8 @@
     >
       <mat-card>
         <mat-card-header>
-          <img [src]="avatarUrl" alt="avt" mat-card-avatar />
-          <mat-card-title>{{ userName }}</mat-card-title>
+          <img [src]="roomChat.roomImage" alt="avt" mat-card-avatar />
+          <mat-card-title>{{ roomChat.roomName }}</mat-card-title>
           <mat-card-subtitle>{{ lastTimeConnect }}</mat-card-subtitle>
         </mat-card-header>
       </mat-card>
@@ -45,13 +45,15 @@
             >
               <div class="infochat mechat">
                 <div style="padding-right: 4px">
-                  <p>{{ mess.username }}</p>
+                  <p *ngIf="roomChat.roomType === 'two'">
+                    {{ getUserName(mess.owner) }}
+                  </p>
                   <div>{{ mess.message }}</div>
                   <p>{{ mess.time | date: "hh:mm" }}</p>
                 </div>
               </div>
               <div class="avtchat me">
-                <img [src]="mess.avt" alt="avt" />
+                <img [src]="getImage(mess.owner)" alt="avt" />
               </div>
             </div>
             <div
@@ -61,11 +63,13 @@
               style="padding-left: 20px"
             >
               <div class="avtchat you">
-                <img [src]="mess.avt" alt="avt" />
+                <img [src]="getImage(mess.owner)" alt="avt" />
               </div>
               <div class="infochat youchat">
                 <div style="padding-left: 4px">
-                  <p>{{ mess.username }}</p>
+                  <p *ngIf="roomChat.roomType === 'two'">
+                    {{ getUserName(mess.owner) }}
+                  </p>
                   <div>{{ mess.message }}</div>
                   <p>{{ mess.time | date: "hh:mm" }}</p>
                 </div>

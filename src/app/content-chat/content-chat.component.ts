@@ -1,3 +1,4 @@
+import { RoomModel } from './../shared/model/room.model';
 import { DbLocalService } from './../shared/data/db.service';
 import { DataFriendsService } from './../shared/data/data-friends.service';
 import { map } from 'rxjs/operators';
@@ -33,6 +34,7 @@ export class ContentChatComponent implements OnInit, AfterViewChecked {
   avatarUrl = this.storageService.get('avt');
   userid = this.storageService.get('userId');
   username = this.storageService.get('userName');
+  roomChat: RoomModel;
   userName = 'ZALO';
   lastTimeConnect = 'Truy cập 1 giờ trước';
   listConversation = [];
@@ -45,13 +47,21 @@ export class ContentChatComponent implements OnInit, AfterViewChecked {
     });
     this.dataChatService.currentRoom.subscribe((room) => {
       if (room != 'default') {
-        this.userName = room.username;
-        this.avatarUrl = room.imgurl;
-        this.roomid = room.roomid;
-        this.listConversation = room.listmessage;
+        this.roomChat = room;
+        this.listConversation = room.roomConversations;
       }
     });
   }
+
+  getImage(owner) {
+    let user = this.roomChat.roomMember.find((x) => x.userid === owner);
+    return user.imgurl;
+  }
+  getUserName(owner) {
+    let user = this.roomChat.roomMember.find((x) => x.userid === owner);
+    return user.username;
+  }
+
   sendMessage(message: string) {
     if (message.length > 0) {
       let mess = new ChatModel(

@@ -24,22 +24,22 @@ export class ListItemChatComponent implements OnInit {
   listConversition = [];
   lastMessage = 'hello';
   selectedOptions: any;
+
   selectedValue = 1;
   ngOnInit(): void {
     this.dataChatService.currentListRoomChat.subscribe((list) => {
       this.listRoomChat = list;
+      console.log(this.listRoomChat);
     });
-  }
-  async getListItemChat(): Promise<any> {
-    const id = this.storageService.get('userId');
   }
   changeSelected() {
     this.dataChatService.changeIsShow(true);
     if (this.selectedOptions[0]) {
-      let roomid = this.selectedOptions[0].roomid;
-      this.selectedOptions[0].listmessage = this.dbLocal.getAllMessageFromRoom(
+      let roomid = this.selectedOptions[0].roomId;
+      this.selectedOptions[0].roomConversations = this.dbLocal.getAllMessageFromRoom(
         roomid
       );
+      console.log(this.selectedOptions[0]);
       this.chatService
         .getMessageFromRoom({
           roomid: roomid,
@@ -49,7 +49,7 @@ export class ListItemChatComponent implements OnInit {
           this.dbLocal.RoomObject[roomid].setListConversitions(value['Items']);
           this.dbLocal.changeListMessage(value['Items']);
         });
-
+      console.log(this.selectedOptions[0]);
       this.dataChatService.changSelectRoom(this.selectedOptions[0]);
     }
   }

@@ -1,3 +1,4 @@
+import { throwError } from 'rxjs';
 import { UserModel } from './../shared/model/user.model';
 import { DbLocalService } from './../shared/data/db.service';
 import { DataChatService } from './../shared/data/data-chat.service';
@@ -18,6 +19,7 @@ import { NotifyService } from './../service/notify.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageModel } from '../shared/model/message.model';
 import { RoomModel } from '../shared/model/room.model';
+
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -70,20 +72,33 @@ export class HomePageComponent implements OnInit {
           userid: this.userId,
         })
         .then((room) => {
-          this.dataChatService.changeListRoom(room['Items']);
           room['Items'].forEach((room) => {
             this.notifyService.joinRom(room.roomid);
             Promise.all([
               this.chatService
                 .getMemberInRoom({ member: room.member.join() })
                 .then((res) => {
-                  this.dbLocal.RoomObject[room.roomid] = new RoomModel(
-                    room.roomid,
-                    room.roomtype,
-                    res.Items
-                  );
+                  if (room.hasOwnProperty('roomname')) {
+                    this.dbLocal.RoomObject[room.roomid] = new RoomModel(
+                      room.roomid,
+                      room.roomtype,
+                      res.Items,
+                      room.roomname
+                    );
+                  } else {
+                    this.dbLocal.RoomObject[room.roomid] = new RoomModel(
+                      room.roomid,
+                      room.roomtype,
+                      res.Items,
+                      ''
+                    );
+                  }
                 }),
-            ]);
+            ]).then(() => {
+              this.dbLocal.getAllRoom().then((listRoom) => {
+                this.dataChatService.changeListRoom(listRoom);
+              });
+            });
           });
         }),
     ])
