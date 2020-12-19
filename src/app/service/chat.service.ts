@@ -3,13 +3,13 @@ import { Observable } from 'rxjs';
 import * as io from 'socket.io-client';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Url } from '../shared/url';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class ChatService {
-  readonly url = 'http://localhost:3200';
+  readonly url = Url.apiChat();
   socket: any;
 
   constructor(private http: HttpClient) {
@@ -17,30 +17,26 @@ export class ChatService {
   }
 
   async getListRoom(model: any): Promise<any> {
-    return this.http
-      .post<any>('http://localhost:3200/api/getRoom', model)
-      .toPromise();
+    return this.http.post<any>(this.url + '/api/getRoom', model).toPromise();
   }
 
   async getListRoomChat(model: any): Promise<any> {
     return this.http
-      .post<any>('http://localhost:3200/api/getRoomChat', model)
+      .post<any>(this.url + '/api/getRoomChat', model)
       .toPromise();
   }
   async getMemberInRoom(model: any): Promise<any> {
     return this.http
-      .post<any>('http://localhost:3200/api/getMemberInRoom', model)
+      .post<any>(this.url + '/api/getMemberInRoom', model)
       .toPromise();
   }
 
   async getMessageFromRoom(model: any): Promise<any> {
     return this.http
-      .post<any>('http://localhost:3200/api/getMessageFromRoom', model)
+      .post<any>(this.url + '/api/getMessageFromRoom', model)
       .toPromise();
   }
   async putMessage(model: any): Promise<any> {
-    return this.http
-      .post<any>('http://localhost:3200/api/putMessage', model)
-      .toPromise();
+    return this.http.post<any>(this.url + '/api/putMessage', model).toPromise();
   }
 }
