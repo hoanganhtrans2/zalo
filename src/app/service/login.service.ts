@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginModel } from '../shared/model/login.model';
+import { Url } from '../shared/url';
 import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
+  readonly url = Url.apiFriend();
   constructor(
     private http: HttpClient,
     private storageService: StorageService
@@ -14,7 +16,7 @@ export class LoginService {
 
   async login(model: LoginModel): Promise<any> {
     const res = await this.http
-      .post<any>('http://localhost:3000/api/login', model)
+      .post<any>(this.url + '/api/login', model)
       .toPromise();
     if (res.Item) {
       this.storageService.set('userName', res.Item.username);

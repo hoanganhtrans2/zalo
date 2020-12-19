@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
+
 export class ChatService {
   readonly url = 'http://localhost:3200';
   socket: any;
