@@ -39,7 +39,7 @@ export class ListItemChatComponent implements OnInit {
       this.selectedOptions[0].roomConversations = this.dbLocal.getAllMessageFromRoom(
         roomid
       );
-      console.log(this.selectedOptions[0]);
+      //console.log(this.selectedOptions[0]);
       this.chatService
         .getMessageFromRoom({
           roomid: roomid,
@@ -49,7 +49,7 @@ export class ListItemChatComponent implements OnInit {
           this.dbLocal.RoomObject[roomid].setListConversitions(value['Items']);
           this.dbLocal.changeListMessage(value['Items']);
         });
-      console.log(this.selectedOptions[0]);
+      //console.log(this.selectedOptions[0]);
       this.dataChatService.changSelectRoom(this.selectedOptions[0]);
     }
   }

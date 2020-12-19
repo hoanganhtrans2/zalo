@@ -218,6 +218,9 @@ export class HomePageComponent implements OnInit {
 
   logOut() {
     this.storageService.removeAll();
+    this.dbLocal.RoomObject = {};
+    this.dbLocal.UserObject = {};
+    this.dataChatService.changeListRoom([]);
     this.router.navigate(['./login']);
   }
 }
